@@ -8,13 +8,15 @@ void SeedFromString(DWORD *pdwSeed, LPCTSTR lpszText) {
     UINT cchText = _tcslen(lpszText);
     for (UINT i = 0; i < cchText; i++) {
         TCHAR ch = lpszText[i];
-        BYTE bAdd = (BYTE)((ch - _T('a') + 1) & 0xFF);
+        if ((ch >= _T('a')) && (ch <= _T('z'))) {
+            BYTE bAdd = (BYTE)(((DWORD)ch - _T('a') + i + 1) % 0xFF);
 
-        UINT uOffset = (i * 8) % 32;
-        BYTE bNew = (BYTE)((((dwSeed >> uOffset) & 0xFF) + bAdd) % 0xFF);
+            UINT uOffset = (i * 8) % 32;
+            BYTE bNew = (BYTE)((((dwSeed >> uOffset) & 0xFF) + bAdd) % 0xFF);
 
-        dwSeed = dwSeed & ~(DWORD)(0xFF << uOffset);
-        dwSeed = dwSeed | (bNew << uOffset);
+            dwSeed = dwSeed & ~(DWORD)(0xFF << uOffset);
+            dwSeed = dwSeed | (bNew << uOffset);
+        }
     }
     *pdwSeed = dwSeed;
 }

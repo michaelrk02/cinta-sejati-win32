@@ -17,7 +17,7 @@ foreach(srcfile IN LISTS srcfiles)
     set(srcfiles_new ${srcfiles_new} "${CMAKE_CURRENT_SOURCE_DIR}/src/${srcfile}")
 endforeach(srcfile)
 
-set(compile_defs)
+set(compile_defs "")
 set(link_opts "")
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(compile_defs "UNICODE" "_UNICODE")
