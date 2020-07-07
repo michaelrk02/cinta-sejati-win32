@@ -19,7 +19,7 @@ void ViewResult(void) {
     _tcslwr(lpszName1);
     SeedFromString(&dwSeed1, lpszName1);
     SeedFromString(&dwRandomSeed, lpszName1);
-    delete lpszName1;
+    delete[] lpszName1;
 
     DWORD dwSeed2 = 0;
     HWND hName2 = GetDlgItem(g_hMainDlg, IDC_NAME2);
@@ -29,7 +29,7 @@ void ViewResult(void) {
     _tcslwr(lpszName2);
     SeedFromString(&dwSeed2, lpszName2);
     SeedFromString(&dwRandomSeed, lpszName2);
-    delete lpszName2;
+    delete[] lpszName2;
 
     if (fAccurate) {
         HWND hBDate1 = GetDlgItem(g_hMainDlg, IDC_BDATE1);
