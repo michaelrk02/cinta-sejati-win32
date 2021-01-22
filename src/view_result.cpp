@@ -35,26 +35,24 @@ void ViewResult(void) {
         HWND hBDate1 = GetDlgItem(g_hMainDlg, IDC_BDATE1);
         SYSTEMTIME st1;
         SendMessage(hBDate1, DTM_GETSYSTEMTIME, 0, (LPARAM)&st1);
-        ZeroMemory(&st1.wHour, sizeof(WORD) * 4);
-        FILETIME ft1;
-        SystemTimeToFileTime(&st1, &ft1);
-        ft1.dwLowDateTime = ft1.dwLowDateTime ^ dwSeed1;
-        ft1.dwHighDateTime = ~dwSeed1;
-        SeedFromFiletime(&dwRandomSeed, &ft1);
+        ULARGE_INTEGER uli1;
+        uli1.QuadPart = (ULONGLONG)st1.wYear * 1000000 + st1.wMonth * 10000 + st1.wDay * 100;
+        uli1.LowPart = uli1.LowPart ^ dwSeed1;
+        uli1.HighPart = uli1.LowPart;
+        SeedFromULI(&dwRandomSeed, &uli1);
 
         HWND hBDate2 = GetDlgItem(g_hMainDlg, IDC_BDATE2);
         SYSTEMTIME st2;
         SendMessage(hBDate2, DTM_GETSYSTEMTIME, 0, (LPARAM)&st2);
-        ZeroMemory(&st2.wHour, sizeof(WORD) * 4);
-        FILETIME ft2;
-        SystemTimeToFileTime(&st2, &ft2);
-        ft2.dwLowDateTime = ft2.dwLowDateTime ^ dwSeed2;
-        ft2.dwHighDateTime = ~dwSeed2;
-        SeedFromFiletime(&dwRandomSeed, &ft2);
+        ULARGE_INTEGER uli2;
+        uli2.QuadPart = (ULONGLONG)st2.wYear * 1000000 + st2.wMonth * 10000 + st2.wDay * 100;
+        uli2.LowPart = uli2.LowPart ^ dwSeed2;
+        uli2.HighPart = uli2.LowPart;
+        SendMessage(hBDate2, DTM_GETSYSTEMTIME, 0, (LPARAM)&st2);
+        SeedFromULI(&dwRandomSeed, &uli2);
     }
 
-    srand(dwRandomSeed);
-    int nResult = rand() % 101;
+    int nResult = 1 + (dwRandomSeed ^ 0xDEADBEEF) % 100;
     TCHAR szMsg[20];
     _stprintf(szMsg, _T("Kecocokan: %d%%"), nResult);
     MessageBox(NULL, szMsg, _T("Hasil"), MB_ICONINFORMATION);

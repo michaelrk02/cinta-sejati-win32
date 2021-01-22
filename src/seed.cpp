@@ -21,14 +21,11 @@ void SeedFromString(DWORD *pdwSeed, LPCTSTR lpszText) {
     *pdwSeed = dwSeed;
 }
 
-void SeedFromFiletime(DWORD *pdwSeed, CONST FILETIME *pft) {
+void SeedFromULI(DWORD *pdwSeed, CONST ULARGE_INTEGER *puli) {
     DWORD dwSeed = *pdwSeed;
-    ULARGE_INTEGER uli;
-    uli.LowPart = pft->dwLowDateTime;
-    uli.HighPart = pft->dwHighDateTime;
 
     for (UINT i = 0; i < 8; i++) {
-        BYTE bAdd = (BYTE)((uli.QuadPart >> (i * 8)) & 0xFF);
+        BYTE bAdd = (BYTE)((puli->QuadPart >> (i * 8)) & 0xFF);
 
         UINT uOffset = (i * 8) % 32;
         BYTE bNew = (BYTE)((((dwSeed >> uOffset) & 0xFF) + bAdd) % 0xFF);

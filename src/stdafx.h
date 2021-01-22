@@ -28,4 +28,4 @@ void ViewResult(void);
 
 /* application procedures */
 void SeedFromString(DWORD *pdwSeed, LPCTSTR lpszText);
-void SeedFromFiletime(DWORD *pdwSeed, CONST FILETIME *pft);
+void SeedFromULI(DWORD *pdwSeed, CONST ULARGE_INTEGER *puli);
